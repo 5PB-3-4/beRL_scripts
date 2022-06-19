@@ -1,0 +1,262 @@
+@モード:5_6_7_追加設定
+--track0:X_seed,-1000,1000,1,1
+--track1:Y_seed,-1000,1000,1,1
+--track2:Z_seed,-1000,1000,1,1
+--track3:回転,-10000,10000,0,0.01
+--check0:四色変化,0
+--dialog:ランダム回転/chk,rot_0=0;乱数範囲,rank_0={-100,100};球精度,local acc_0=30;初期値,local fs_0=1;進行度係数,local kf_t0=1;座標係数[x_y_z],local kf_c0={1,1,1};
+
+rank={}
+kf_c={}
+
+f1_1=obj.track0 or 0
+f2_1=obj.track1 or 0
+f3_1=obj.track2 or 0
+f4_1=obj.track3 or 0
+f5_1=obj.check0
+
+rot=rot_0
+acc=acc_0
+fs=fs_0
+kf_t=kf_t0
+f5c=0
+
+for zz=1,3,1 do
+	rank[zz]=rank_0[zz] or 0
+	kf_c[zz]=kf_c0[zz] or 0
+end
+
+if(f5_1) then
+	f5c=1
+else
+	f5c=0
+end
+
+@分割出力
+--track0:分割_縦,1,100,1,1
+--track1:分割_横,1,100,1,1
+--track2:mode,1,7,1,1
+--track3:seed,0,1000,0,1
+--check0:時間色変化,0
+--dialog:縦グリット隔幅,local ht=1;横グリット隔幅,local wd=1;色1/col,local col_1=0xa06fc4;色2/col,local col_2=0x6fbac4;色3/col,local col_3=0xfbe175;色4/col,local col_4=0xf6a04b;ライン幅,local line=100;三角形分割[0-5],local tri=0;正方形分割/chk,local dif=0;サイズ,local size=30;
+
+local x={}
+local y={}
+
+local hx={}
+local hy={}
+local hz={}
+
+local ax={1,2,2,1}
+local bx,by
+
+local f1=obj.track0 or 0
+local f2=obj.track1 or 0
+local f3=obj.track2 or 0
+local f4=obj.track3 or 0
+local f5=obj.check0
+
+local x0=obj.screen_w
+local y0=obj.screen_h
+
+local i,j
+local k,n
+local l,m
+local p
+local zom
+local hue,str,val
+local f5c1=f5c or 0
+
+local h2={}
+local s2={}
+local v2={}
+local mod_gl={ht or 1,wd or 1,line or 1}
+local mod_pl={}
+
+local x_0,y_0,z_0
+local x_1,y_1,z_1
+local x_2,z_2
+local x_3,z_3
+local r0,r1
+local u0,v0
+local u1,v0
+local u1,v1
+local u0,v1
+local x7,y7
+-------------------------------------------------------------------------------------------
+if(f5) then
+	ou=1
+else
+	ou=0
+end
+
+local q=ou*obj.frame
+local lux = size*obj.getvalue("zoom")/100
+
+if(dif==1) then
+	f2=math.floor(f1*y0/x0)
+end
+
+for r=1,table.maxn(mod_gl),1 do
+
+	if(mod_gl[r]==0) then
+		mod_pl[r]=1
+	else
+		mod_pl[r]=math.abs(mod_gl[r] or 1)
+	end
+end
+
+if(tri==1) then
+	ax[1]=ax[2]
+elseif(tri==2) then
+	ax[2]=ax[1]
+elseif(tri==3) then
+	ax[3]=ax[4]
+elseif(tri==4) then
+	ax[4]=ax[3]
+else
+end
+
+-------------------------------------------------------------------------------------------
+function coo(l,m)
+	
+	bx=-x0/2+x0*l/f1
+	by=-y0/2+y0*m/f2
+	return bx,by
+end
+
+function cl(k,n)
+
+--p=math.ceil(n*math.cos(k*math.pi)+k*math.cos(n*math.pi))*f4
+	p=f4*(f2*math.floor(n/mod_pl[2])+math.floor(k/mod_pl[1])+1)
+
+	if(f3==1 or f5c1==1) then	
+		rdm=obj.rand(1,4.4,p,q)
+		h2[1],s2[1],v2[1]=HSV(col_1)
+		h2[2],s2[2],v2[2]=HSV(col_2)
+		h2[3],s2[3],v2[3]=HSV(col_3)
+		h2[4],s2[4],v2[4]=HSV(col_4)
+
+		hue=h2[math.floor(rdm)]
+		str=s2[math.floor(rdm)]
+		val=v2[math.floor(rdm)]
+
+	elseif(f3==2) then
+		hue=math.floor(obj.rand(0,255,p,q))
+		str=math.floor(obj.rand(0,100,p,q))
+		val=math.floor(obj.rand(0,100,p,q))
+
+	else
+		hue=math.floor(obj.rand(0,255,p,q))
+		str=math.floor(obj.rand(0,100,p,q))
+		val=math.floor(obj.rand(0,100,p,q))
+	end
+	return HSV(hue,str,val)
+end
+-------------------------------------------------------------------------------------------
+for j=0,f2,1 do
+	for i=0,f1,1 do
+
+		x[1],y[1]=coo(i,j)
+		x[2],y[2]=coo(i+1,j+1)
+		local xp=(x[1]+x[2])/2
+		local yp=(y[1]+y[2])/2
+
+		if(f3==5) then
+			obj.rx=obj.rx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.ry=obj.ry+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.rz=obj.rz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.cx=obj.cx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.cy=obj.cy+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.cz=obj.cz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.effect()
+			obj.draw(xp,yp,obj.z)
+
+		elseif(f3==6) then
+
+			hx[1]=xp-lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+			hx[2]=xp+lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+			hy[1]=yp-lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+			hy[2]=yp+lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+			hz[1]=  -lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+			hz[2]=   lux+rot*obj.rand( rank[1],rank[2],f4+100,math.abs(fs) )/100
+
+			obj.rx=obj.rx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.ry=obj.ry+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.rz=obj.rz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.cx=obj.cx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.cy=obj.cy+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.cz=obj.cz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.effect("単色化","強さ",100,"輝度を保持する",0,"color",cl(i,j))
+
+			obj.drawpoly(hx[1],hy[1],hz[1],  hx[2],hy[1],hz[1],  hx[2],hy[2],hz[1],  hx[1],hy[2],hz[1], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.drawpoly(hx[2],hy[1],hz[2],  hx[1],hy[1],hz[2],  hx[1],hy[2],hz[2],  hx[2],hy[2],hz[2], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.drawpoly(hx[1],hy[2],hz[1],  hx[2],hy[2],hz[1],  hx[2],hy[2],hz[2],  hx[1],hy[2],hz[2], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.drawpoly(hx[2],hy[1],hz[1],  hx[1],hy[1],hz[1],  hx[1],hy[1],hz[2],  hx[2],hy[1],hz[2], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.drawpoly(hx[2],hy[1],hz[1],  hx[2],hy[1],hz[2],  hx[2],hy[2],hz[2],  hx[2],hy[2],hz[1], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.drawpoly(hx[1],hy[1],hz[2],  hx[1],hy[1],hz[1],  hx[1],hy[2],hz[1],  hx[1],hy[2],hz[2], 0,0, obj.w,0, obj.w,obj.h, 0,obj.h)
+			obj.setoption("focus_mode","fixed_size")
+
+		elseif(f3==7) then
+
+			obj.rx=obj.rx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.ry=obj.ry+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.rz=obj.rz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.cx=obj.cx+rot*obj.rand( rank[1],rank[2],f1_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[1]
+			obj.cy=obj.cy+rot*obj.rand( rank[1],rank[2],f2_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[2]
+			obj.cz=obj.cz+rot*obj.rand( rank[1],rank[2],f3_1,math.abs(fs) )/100+kf_t*f4_1*kf_c[3]
+
+			obj.effect("単色化","強さ",100,"輝度を保持する",0,"color",cl(i,j))
+
+			obj.setoption('antialias',0)	
+			local r7 = lux
+			local w7 = math.floor(math.abs(acc))
+			local h7 = math.floor(math.abs(acc))
+
+			for y7=0,h7-1 do
+				y_0 = -r7*math.cos(math.pi*y7    /h7)
+				r0  =  r7*math.sin(math.pi*y7    /h7)
+				y_1 = -r7*math.cos(math.pi*(y7+1)/h7)
+				r1  =  r7*math.sin(math.pi*(y7+1)/h7)
+				v0  = obj.h*y7    /h7;
+				v1  = obj.h*(y7+1)/h7;
+			
+				for x7=0,w7-1 do
+					x_0 =  r0*math.sin(math.pi*2*x7    /w7)
+					x_1 =  r0*math.sin(math.pi*2*(x7+1)/w7)
+					x_2 =  r1*math.sin(math.pi*2*(x7+1)/w7)
+					x_3 =  r1*math.sin(math.pi*2*x7    /w7)
+					z_0 = -r0*math.cos(math.pi*2*x7    /w7)
+					z_1 = -r0*math.cos(math.pi*2*(x7+1)/w7)
+					z_2 = -r1*math.cos(math.pi*2*(x7+1)/w7)
+					z_3 = -r1*math.cos(math.pi*2*x7    /w7)
+					u0  = obj.w*x7    /w7;
+					u1  = obj.w*(x7+1)/w7;
+
+					obj.drawpoly(x_0+xp,y_0+yp,z_0,x_1+xp,y_0+yp,z_1,x_2+xp,y_1+yp,z_2,x_3+xp,y_1+yp,z_3,u0,v0,u1,v0, u1,v1,u0,v1)
+				end
+			end
+			obj.setoption("focus_mode","fixed_size")
+
+		else
+			obj.load("figure","四角形",cl(i,j),20,math.abs(mod_pl[3]))
+			obj.effect();
+			if(f3==3) then
+				obj.drawpoly(x[ax[1]],y[1],0,x[ax[2]],y[1],0,x[ax[3]],y[2],0,x[ax[4]],y[2],0,-10,-10,10,-10,10,10,-10,10,val/100)
+			elseif(f3==4) then
+				obj.effect("単色化","強さ",100,"輝度を保持する",1,"color",col_1)
+				obj.drawpoly(x[ax[1]],y[1],0,x[ax[2]],y[1],0,x[ax[3]],y[2],0,x[ax[4]],y[2],0)
+			else
+				obj.drawpoly(x[ax[1]],y[1],0,x[ax[2]],y[1],0,x[ax[3]],y[2],0,x[ax[4]],y[2],0)
+			end
+		end
+	end
+end
+
+
+
