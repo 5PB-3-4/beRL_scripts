@@ -2,7 +2,7 @@
 --track1:図形割合,0,100,4,1
 --track2:seed,1,100,3,1
 --track3:進行度,0,100,0,0.01
---check0:時間変化,0
+--check0:ランダム変化,0
 --dialog:色/col,local col_1=0xffffff;
 
 _0=nil;
