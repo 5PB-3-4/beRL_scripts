@@ -74,7 +74,7 @@ if(switch0) then
 	if(map) then
 		for i=1,#_3 do
 			for j=1,#_3[i] do
-				print("閾値マップの".." ("..i..","..j..") 番目要素 : ".._3[i][j])
+				print("閾値マップの".." ("..i..","..j..") 番目の要素 : ".._3[i][j])
 			end
 			print("-----------------------------------------------------------\n")
 		end
@@ -82,7 +82,7 @@ if(switch0) then
 	else
 		for i=1,2^slider3 do
 			for j=1,2^slider3 do
-				print("閾値マップの".." ("..i..","..j..") 番目要素 : "..M[i][j])
+				print("閾値マップの".." ("..i..","..j..") 番目の要素 : "..M[i][j])
 			end
 			print("-----------------------------------------------------------\n")
 		end
@@ -103,7 +103,6 @@ for y=0,h-1 do
 	for x=0,w-1 do
 		local p=cd[x+y*w]
 		local bgra
-		-- local mp,mq=table.maxn(_3),table.maxn(_3[y+1])
 		
 		local bb=math.floor(p.b/(256/slider2))*256/slider2
 		local gb=math.floor(p.g/(256/slider1))*256/slider1
