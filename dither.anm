@@ -8,7 +8,7 @@
 --track2:階調_青,1,256,8,1
 --track3:bayer,1,10,2,1
 --check0:マップ表示,0
---dialog:減色のみ/chk,_1=0;マップ指定/chk,_2=0;指定マップ,_3={{0,1,2},{3,4,5},{6,7,8}};係数,_4=9;
+--dialog:減色のみ/chk,_1=0;マップ指定/chk,_2=0;指定マップ,_3={{0,1,2},{3,4,5},{6,7,8}};係数,_4=9;ver1_0/chk,_5=0;
 
 -------------------------------------------------------------------------------------------
 local slider0	=	obj.track0
@@ -19,10 +19,12 @@ local switch0	=	obj.check0
 
 local reduced	=	_1 ~=0
 local map		=	_2 ~=0
-local weight	=	_4
+local coef		=	_4
+local transpose	=	_5 ~=0
 _1=nil
 _2=nil
 _4=nil
+_5=nil
 
 --閾値マップ
 
@@ -78,7 +80,7 @@ if(switch0) then
 			end
 			print("-----------------------------------------------------------\n")
 		end
-		print("係数:"..weight)
+		print("係数:"..coef)
 	else
 		for i=1,2^slider3 do
 			for j=1,2^slider3 do
@@ -109,9 +111,13 @@ for y=0,h-1 do
 		local rb=math.floor(p.r/(256/slider0))*256/slider0
 		
 		if(map) then
-			bgra=math.floor(255*(_3[y%#_3+1][x%#_3[y%#_3+1]+1]))/weight
+			bgra=math.floor(255*(_3[y%#_3+1][x%#_3[y%#_3+1]+1]))/coef
 		else
-			bgra=math.floor(255*(M[y%(2^slider3)+1][x%(2^slider3)+1])/((2^slider3)^2))
+			if(transpose) then
+				bgra=math.floor(255*(M[x%(2^slider3)+1][y%(2^slider3)+1]+1)/((2^slider3)^2))
+			else
+				bgra=math.floor(255*(M[y%(2^slider3)+1][x%(2^slider3)+1]+1)/((2^slider3)^2))
+			end
 		end
 
 		if(reduced) then
