@@ -19,12 +19,19 @@ local switch0	=	obj.check0
 
 local reduced	=	_1 ~=0
 local map		=	_2 ~=0
+local custom	=	_3
 local coef		=	_4
 local transpose	=	_5 ~=0
 _1=nil
 _2=nil
+_3=nil
 _4=nil
 _5=nil
+
+-- print("start_script_do_collectgarbage\n")
+-- debug_print("check_collectgarbage_"..collectgarbage("count"))
+-- debug_print("do_collectgarbage_"..collectgarbage("collect"))
+-- debug_print("re_check_collectgarbage_"..collectgarbage("count"))
 
 --閾値マップ
 
@@ -74,9 +81,9 @@ if(switch0) then
 	print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
 	print("しきい値マップ\n")
 	if(map) then
-		for i=1,#_3 do
-			for j=1,#_3[i] do
-				print("閾値マップの".." ("..i..","..j..") 番目の要素 : ".._3[i][j])
+		for i=1,#custom do
+			for j=1,#custom[i] do
+				print("閾値マップの".." ("..i..","..j..") 番目の要素 : "..custom[i][j])
 			end
 			print("-----------------------------------------------------------\n")
 		end
@@ -111,7 +118,7 @@ for y=0,h-1 do
 		local rb=math.floor(p.r/(256/slider0))*256/slider0
 		
 		if(map) then
-			bgra=math.floor(255*(_3[y%#_3+1][x%#_3[y%#_3+1]+1]))/coef
+			bgra=math.floor(255*(custom[y%#custom+1][x%#custom[y%#custom+1]+1]))/coef
 		else
 			if(transpose) then
 				bgra=math.floor(255*(M[x%(2^slider3)+1][y%(2^slider3)+1]+1)/((2^slider3)^2))
@@ -133,6 +140,31 @@ for y=0,h-1 do
 end
 obj.putpixeldata(ub)
 
+--メモリを開けるために変数にnilを詰めてガベージコレクションを行う
+M=nil
+Ma=nil
+slider0=nil
+slider1=nil
+slider2=nil
+slider3=nil
+switch0=nil
+
+reduced		=	nil
+map			=	nil
+custom		=	nil
+coef		=	nil
+transpose	=	nil
+
+ffi=nil
+ub,w,h=nil,nil,nil
+cd=nil
+
+collectgarbage("collect")
+
+-- print("end_script_do_collectgarbage\n")
+-- debug_print("check_collectgarbage_"..collectgarbage("count"))
+-- debug_print("do_collectgarbage_"..collectgarbage("collect"))
+-- debug_print("re_check_collectgarbage_"..collectgarbage("count").."\n")
 -------------------------------------------------------------------------------------------
 --[[
 参考にしたページ
