@@ -60,7 +60,11 @@ _0=nil
 require("rikky_buffer")
 
 --read&get
-rikky_buffer.read3(id,check_coo)
+if (check_coo) then
+    rikky_buffer.read2(id)
+else
+    rikky_buffer.read(id)
+end
 
 --ƒƒ‚ƒŠ‰ğ•ú
 id=nil

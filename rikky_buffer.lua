@@ -277,15 +277,9 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
---í«â¡Ç≈extbuffer.readÇçƒåªÇµÇΩ
+--âΩÇ©
 ----------------------------------------------------------------------------------------------------------------------------------
-rikky_buffer.read3 = function(id,alpha)
-	if (alpha) then
-		rikky_buffer.read2(id)
-	else
-		rikky_buffer.read(id)
-	end
-
+rikky_buffer.read3 = function(id)
 	local user,wb,hb=rikky_buffer.get(id)
 	obj.putpixeldata(user)
 	user,wb,hb=nil,nil,nil

@@ -53,8 +53,7 @@ _0=nil
 require("rikky_buffer")
 
 --read&get
-rikky_buffer.read3(id,false)
-
+rikky_buffer.read(id)
 
 --ƒƒ‚ƒŠ‰ğ•ú
 id=nil
