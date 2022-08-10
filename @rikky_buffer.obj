@@ -7,7 +7,7 @@
 @画像データの保存
 --track0:id,1,1000,0,1
 --check0:ﾌﾚｰﾑﾊﾞｯﾌｧ参照,1
---dialog:仮想ﾊﾞｯﾌｧ行/chk,_1=0;injection,_0=nil;
+--dialog:仮想ﾊﾞｯﾌｧ読込/chk,_1=0;injection,_0=nil;
 
 
 local id=_0 or obj.track0
@@ -19,19 +19,13 @@ _1=nil
 _2=nil
 
 require("rikky_buffer")
--- obj.load("framebuffer")
+
 --copybuffer
 if(check_frm) then  safe_copybuffer("obj","frm")    end
-if(check_tmp) then  safe_copybuffer("tmp","obj")    end
+if(check_tmp) then  safe_copybuffer("obj","tmp")    end
 
 --write
-rikky_buffer.write(id,check_tmp)
-
--- debug_print("empty_id="..rikky_buffer.freeid())
--- use_id=rikky_buffer.useid()
--- for i=1,#use_id do
---     debug_print("use_id="..use_id[i])
--- end
+rikky_buffer.write(id)
 
 obj.alpha=0
 
@@ -52,7 +46,7 @@ local id=_0 or obj.track0
 _0=nil
 require("rikky_buffer")
 
---read&get
+--read
 rikky_buffer.read(id)
 
 --メモリ解放
@@ -71,6 +65,7 @@ local check_all=obj.check0
 _0=nil
 require("rikky_buffer")
 
+--clean
 if(check_all) then
 
     local use_id=rikky_buffer.useid()
@@ -110,6 +105,7 @@ _0=nil
 
 require("rikky_buffer")
 
+--copy
 if (overwrite) then
     rikky_buffer.copy(dst_id,src_id)
 else

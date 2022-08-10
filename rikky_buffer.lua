@@ -128,6 +128,17 @@ function safe_copybuffer(dst,src)
 end
 
 ----------------------------------------------------------------------------------------------------------------------------------
+--constrain
+----------------------------------------------------------------------------------------------------------------------------------
+function constrain(val,under,up)
+    if (under>up) then
+		under,up = up,under
+	end
+	val = (val<under) and under or ( (up<val) and up or val)
+	return val
+end
+
+----------------------------------------------------------------------------------------------------------------------------------
 --require rikky_module
 ----------------------------------------------------------------------------------------------------------------------------------
 rikky_buffer = rikky_buffer or {}
@@ -145,7 +156,7 @@ rikky_buffer.write = function(id,tmp)
     return rikky_module.image("w",id,tmp)
 end
 
-rikky_buffer.write2 = function(id,tmp)
+rikky_buffer.write2 = function(id)
     -- if not (rikky_module.image("w+",id)) then
     --     id=tostring(id)
     --     debug_print(string.format("Failed rikky_module.image : write+ id=%s",id))
@@ -277,10 +288,36 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
---‰½‚©
+--cŠ[
 ----------------------------------------------------------------------------------------------------------------------------------
-rikky_buffer.read3 = function(id)
-	local user,wb,hb=rikky_buffer.get(id)
-	obj.putpixeldata(user)
-	user,wb,hb=nil,nil,nil
-end
+-- l_num={}  --id+1”Ô–Ú‚Élayer“Ç‚İ‚İ”Ô†‚ª“ü‚è‚Ü‚·
+-- getval={}  --•Û‘¶‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÌŠl“¾‚µ‚½’l8‚Â
+-- val_pool={} --l_num[id+1]”Ô–Ú‚Égetvalƒe[ƒuƒ‹‚ğ•Û‘¶‚µ‚Ü‚·
+
+-- rikky_buffer.writelayer =function(id,layer)
+-- 	--layer”Ô†‚ğid‚Æ•R‚Ã‚¯
+-- 	l_num[id+1]=layer
+
+-- 	--getval‚Ìæ“¾
+-- 	local l_val={"x","y","z","rx","ry","rz","zoom","alpha"}
+-- 	for i=1,#l_val do
+-- 		getval[i]=obj.getvalue("layer."..layer..l_val[i])
+-- 	end
+
+-- 	--getval‚ğval_pool‚ÉŠi”[
+-- 	val_pool[l_num[id+1]]=getval
+-- end
+
+-- rikky_buffer.readlayer = function(id)
+-- 	obj.ox,	obj.oy, obj.oz, obj.rx, obj.ry, obj.rz,	obj.zoom, obj.alpha = unpack(val_pool[l_num[id+1]])
+
+-- 	-- obj.ox   = obj.getvalue("layer."..l_num[id+1].."x")
+-- 	-- obj.oy   = obj.getvalue("layer."..l_num[id+1].."y")
+-- 	-- obj.oz   = obj.getvalue("layer."..l_num[id+1].."z")
+-- 	-- obj.rx   = obj.getvalue("layer."..l_num[id+1].."rx")
+-- 	-- obj.ry   = obj.getvalue("layer."..l_num[id+1].."ry")
+-- 	-- obj.rz   = obj.getvalue("layer."..l_num[id+1].."rz")
+-- 	-- obj.zoom = obj.getvalue("layer."..l_num[id+1].."zoom")
+-- 	-- obj.alpha= obj.getvalue("layer."..l_num[id+1].."alpha")
+
+-- end
