@@ -1,7 +1,7 @@
 --[[
     利用方法 ~ rikky_moduleの使い方 ~ より抜粋
 
-image関数
+	image関数
 	オブジェクトの画像データを一時保存できます
 	第1引数で指定する文字列によって、書き、読み、消し、ID検索などが決定します
 	第1引数の文字列
@@ -273,4 +273,20 @@ end
 
 rikky_buffer.col = function(id,x_or_index,y_or_w,w_or_h,h)
     return rikky_module.image("u+",id,x_or_index,y_or_w,w_or_h,h)
+end
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+--追加でextbuffer.readを再現した
+----------------------------------------------------------------------------------------------------------------------------------
+rikky_buffer.read3 = function(id,alpha)
+	if (alpha) then
+		rikky_buffer.read2(id)
+	else
+		rikky_buffer.read(id)
+	end
+
+	local user,wb,hb=rikky_buffer.get(id)
+	obj.putpixeldata(user)
+	user,wb,hb=nil,nil,nil
 end
