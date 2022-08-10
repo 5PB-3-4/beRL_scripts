@@ -13,10 +13,9 @@
 local id=_0 or obj.track0
 local check_frm=obj.check0
 local check_tmp=_1 ~=0
-local check_a=_2 ~=0
 _0=nil
 _1=nil
-_2=nil
+
 
 require("rikky_buffer")
 
@@ -33,7 +32,6 @@ obj.alpha=0
 id=nil
 check_frm=nil
 check_tmp=nil
-check_a=nil
 collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------

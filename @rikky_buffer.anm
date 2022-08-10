@@ -26,7 +26,6 @@ rikky_buffer.write(id)
 --ƒƒ‚ƒŠ‰ğ•ú 
 id=nil
 check_frm=nil
-check_a=nil
 collectgarbage("collect")
 
 -- debug_print("empty_id="..rikky_buffer.freeid())
