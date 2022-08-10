@@ -1,4 +1,4 @@
-rikky_bufferスクリプト ver[1.0]
+rikky_bufferスクリプト ver[1.1]
 
 ▼このスクリプトは何？
 rikky_moduleを用いて画像を一時保存できるようにしました。基本的な使い方はゆうきさんの一時保存EXTと同じです。
@@ -61,13 +61,14 @@ _0	injection	：{"string_value","string_value"} ダイアログボックスに"�
 
 
 ▼注意点
-・「マップ指定」のチェック有効時のみ、各自で「指定マップ」で設定したテーブルを閾値マップとすることが出来ます。
-・マップ表示は重いので確認する時以外はオフにしておくと良いです。
-・ver1_0はver1.0の再現モードです。利用にはマップ指定のチェックをオフにしておいてください。
+・8/10午後にrikky_buffer.luaと@rikky_buffer.anmと@rikky_buffer.objを更新し、@rikky_buffer.anmと@rikky_buffer.objのバージョンがver1.1になりました。ver1.1では更新前のrikky_buffer.luaは利用できませんのでご注意ください。
 
 ▼バグ
 ver1.0 ('22/8/10)
 なぜかrikky_module.image("c+")が動かなかったため、for文を使って代用している。そのため若干動作が重いかも。
+
+ver1.1 ('22/8/10)
+@rikky_buffer.anmにおける透明度と座標保持ができていない
 
 ▼バグ報告等の連絡先はこちら
 Twitter : @blue_beRL
