@@ -1,11 +1,11 @@
 --[[
     @rikky_buffer.anm
-    ver1.0
+    ver1.1
     (車輪の再発明)
 ]]
 -------------------------------------------------------------------------------------------
 @画像データの保存
---track0:id,0,1000,1,1
+--track0:id,0,1000,0,1
 --check0:ﾌﾚｰﾑﾊﾞｯﾌｧ参照,0
 --dialog:仮想ﾊﾞｯﾌｧ行/chk,_1=0;α値参照/chk,_2=0;injection,_0=nil;
 
@@ -49,7 +49,7 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの読み込み
---track0:id,0,1000,1,1
+--track0:id,0,1000,0,1
 --check0:座標値等を引継,0
 --dialog:injection,_0=nil;
 
@@ -60,38 +60,7 @@ _0=nil
 require("rikky_buffer")
 
 --read&get
-if(check_coo) then
-    rikky_buffer.read2(id)
-
-    -- local pixeltable,wa,ha=rikky_buffer.get2(id)
-    -- local ffi=require"ffi"
-    -- ffi.cdef[[
-    --     typedef struct { uint8_t b,g,r,a; } PixelBGRA;
-    -- ]]
-    -- local ub,w,h=obj.getpixeldata()
-    -- local cd=ffi.cast("PixelBGRA*",ub)
-    -- for y=0,h-1 do
-    --     for x=0,w-1 do
-    --         p=cd[x+y*w]
-    --         p.a=pixeltable.A[x+y*wa+1] or 255
-    --         p.r=pixeltable.R[x+y*wa+1] or 0
-    --         p.g=pixeltable.G[x+y*wa+1] or 0
-    --         p.b=pixeltable.B[x+y*wa+1] or 0
-    --     end
-    -- end
-    -- obj.putpixeldata(ub)
-
-    local user,wb,hb=rikky_buffer.get(id)
-    obj.putpixeldata(user)
-    user,wb,hb=nil,nil,nil
-
-else
-    rikky_buffer.read(id)
-    local user,wb,hb=rikky_buffer.get(id)
-    obj.putpixeldata(user)
-
-    user,wb,hb=nil,nil,nil
-end
+rikky_buffer.read3(id,check_coo)
 
 --メモリ解放
 id=nil
@@ -100,7 +69,7 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの消去
---track0:id,0,1000,1,1
+--track0:id,0,1000,0,1
 --check0:全消し,0
 --dialog:injection,_0=nil;
 
@@ -134,7 +103,7 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの複製
---track0:dst_id,0,1000,2,1
+--track0:dst_id,1,1000,2,1
 --track1:src_id,0,1000,1,1
 --check0:上書き,1
 --dialog:injection,_0=nil;

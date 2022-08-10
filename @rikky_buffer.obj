@@ -1,6 +1,6 @@
 --[[
     @rikky_buffer.anm
-    ver1.0
+    ver1.1
     (車輪の再発明)
 ]]
 -------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの読み込み
---track0:id,0,1000,1,1
+--track0:id,0,1000,0,1
 --dialog:injection,_0=nil;
 
 
@@ -53,11 +53,7 @@ _0=nil
 require("rikky_buffer")
 
 --read&get
-rikky_buffer.read(id)
-local user,wb,hb=rikky_buffer.get(id)
-obj.putpixeldata(user)
-
-user,wb,hb=nil,nil,nil
+rikky_buffer.read3(id,false)
 
 
 --メモリ解放
@@ -66,7 +62,7 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの消去
---track0:id,0,1000,1,1
+--track0:id,0,1000,0,1
 --check0:全消し,0
 --dialog:injection,_0=nil;
 
@@ -101,8 +97,8 @@ collectgarbage("collect")
 
 -------------------------------------------------------------------------------------------
 @保存データの複製
---track0:dst_id,0,1000,2,1
---track1:src_id,0,1000,1,1
+--track0:dst_id,0,1000,1,1
+--track1:src_id,0,1000,0,1
 --check0:上書き,1
 --dialog:injection,_0=nil;
 
