@@ -1,3 +1,5 @@
+@noiz_glit.anmスクリプトのmode1～4までの機能はcolor_separate_pixel.anmを利用することを強くオススメします！
+
 画面分割図形出力スクリプト ver[0.1]
 
 ▼このスクリプトは何？
