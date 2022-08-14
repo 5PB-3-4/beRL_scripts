@@ -30,11 +30,6 @@ _3=nil
 _4=nil
 _5=nil
 
--- print("start_script_do_collectgarbage\n")
--- debug_print("check_collectgarbage_"..collectgarbage("count"))
--- debug_print("do_collectgarbage_"..collectgarbage("collect"))
--- debug_print("re_check_collectgarbage_"..collectgarbage("count"))
-
 -------------------------------------------------------------------------------------------
 --閾値マップ
 -------------------------------------------------------------------------------------------
