@@ -1,10 +1,10 @@
 rikky_bufferスクリプト ver[1.1]
 
 ▼このスクリプトは何？
-rikky_moduleを用いて画像を一時保存できるようにしました。基本的な使い方はゆうきさんの一時保存EXTと同じです。
+rikky_moduleプラグインを用いて画像を一時保存できるようにしました。基本的な使い方はゆうきさんの一時保存EXTと同じだと思います。
 
 ▼導入方法
-aviutlのscriptフォルダに@rikky_buffer.objと@rikky_buffer.anmを、aviutl.exeがあるフォルダにrikky_buffer.luaを置いてください。なおrikky_moduleが無いと動きませんのでそちらのプラグインも導入してください。
+aviutlのscriptフォルダに@rikky_buffer.objと@rikky_buffer.anmを、aviutl.exeがあるフォルダにrikky_buffer.luaを置いてください。なおrikky_moduleプラグインが無いと動きませんのでそちらも導入してください。
 
 ▼機能のご紹介
 画像やフレームバッファをrikky_moduleの方に保存、読み込むことができます。このスクリプトを使うことでフレームバッファをオブジェクトとして扱う、処理が重いところを一時回避する等の使い方ができると思います。
