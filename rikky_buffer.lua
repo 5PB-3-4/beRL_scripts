@@ -1,6 +1,8 @@
 --[[
-    利用方法 ~ rikky_moduleの使い方 ~ より抜粋
+    利用方法 
+	rikky_moduleのimage関数をrikky_buffer.??で呼び出せるようにしました(ついでに変なもの混じっているけど...)
 
+	~ rikky_moduleの使い方 ~ より抜粋
 	image関数
 	オブジェクトの画像データを一時保存できます
 	第1引数で指定する文字列によって、書き、読み、消し、ID検索などが決定します
@@ -120,7 +122,7 @@
 ----------------------------------------------------------------------------------------------------------------------------------
 --copybuffer
 ----------------------------------------------------------------------------------------------------------------------------------
-function safe_copybuffer(dst,src)
+safe_copybuffer = function(dst,src)
     -- if not obj.copybuffer(dst,src) then
     --     debug_print(string.format("Failed obj.copybuffer (%s <- %s)",dst,src))
 	-- end
@@ -130,7 +132,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------------------
 --constrain
 ----------------------------------------------------------------------------------------------------------------------------------
-function constrain(val,under,up)
+constrain = function(val,under,up)
     if (under>up) then
 		under,up = up,under
 	end
@@ -286,38 +288,4 @@ rikky_buffer.col = function(id,x_or_index,y_or_w,w_or_h,h)
     return rikky_module.image("u+",id,x_or_index,y_or_w,w_or_h,h)
 end
 
-
-----------------------------------------------------------------------------------------------------------------------------------
---残骸
-----------------------------------------------------------------------------------------------------------------------------------
--- l_num={}  --id+1番目にlayer読み込み番号が入ります
--- getval={}  --保存したオブジェクトの獲得した値8つ
--- val_pool={} --l_num[id+1]番目にgetvalテーブルを保存します
-
--- rikky_buffer.writelayer =function(id,layer)
--- 	--layer番号をidと紐づけ
--- 	l_num[id+1]=layer
-
--- 	--getvalの取得
--- 	local l_val={"x","y","z","rx","ry","rz","zoom","alpha"}
--- 	for i=1,#l_val do
--- 		getval[i]=obj.getvalue("layer."..layer..l_val[i])
--- 	end
-
--- 	--getvalをval_poolに格納
--- 	val_pool[l_num[id+1]]=getval
--- end
-
--- rikky_buffer.readlayer = function(id)
--- 	obj.ox,	obj.oy, obj.oz, obj.rx, obj.ry, obj.rz,	obj.zoom, obj.alpha = unpack(val_pool[l_num[id+1]])
-
--- 	-- obj.ox   = obj.getvalue("layer."..l_num[id+1].."x")
--- 	-- obj.oy   = obj.getvalue("layer."..l_num[id+1].."y")
--- 	-- obj.oz   = obj.getvalue("layer."..l_num[id+1].."z")
--- 	-- obj.rx   = obj.getvalue("layer."..l_num[id+1].."rx")
--- 	-- obj.ry   = obj.getvalue("layer."..l_num[id+1].."ry")
--- 	-- obj.rz   = obj.getvalue("layer."..l_num[id+1].."rz")
--- 	-- obj.zoom = obj.getvalue("layer."..l_num[id+1].."zoom")
--- 	-- obj.alpha= obj.getvalue("layer."..l_num[id+1].."alpha")
-
--- end
+collectgarbage("collect")
