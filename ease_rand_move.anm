@@ -1,0 +1,68 @@
+--[[
+    ease+ランダム進行スクリプト 2D
+    easeプラグインが必要です
+]]
+
+--track0:数,0,1000,30,1
+--track1:範囲,0,10000,100,0.1
+--track2:進行,0,100,0,0.01
+--track3:seed,0,1000,1,1
+--check0:時間変化,0
+--dialog:参照ｲｰｼﾞﾝｸﾞ,_1=1;アンカー,pos={};マーカー/chk,_2=1;
+
+obj.effect()
+
+local slider0 = obj.track0
+local slider1 = obj.track1
+local slider2 = obj.track2
+local slider3 = obj.track3
+local t = obj.check0 and obj.frame or 0
+
+if slider0==0 then return end
+
+local eas = _1
+local mark = _2 ~= 0
+local x,y = 0, 0
+
+obj.setanchor("pos",2)
+local x1,x2 = pos[1], pos[3]
+local y1,y2 = pos[2], pos[4]
+
+_1=nil
+_2=nil
+pos = nil
+
+local ease=require"ease"
+
+local base = 100000
+
+for j=0,math.floor(slider2) do
+	local xc, yc = ease[1](j/100,x1,x2), ease[eas](j/100,y1,y2)
+
+	for i=1, slider0 do
+		x = xc + slider1*obj.rand(-base,base,i*slider3+j,t)/(2*base)
+		y = yc + slider1*obj.rand(-base,base,i*slider3+j+1,t)/(2*base)
+		obj.draw(x,y)
+	end
+end
+
+if mark then
+	obj.load("figure","円",0xff0000,40)
+	obj.draw(x1,y1)
+	obj.load("figure","円",0x0000ff,40)
+	obj.draw(x2,y2)
+end
+
+slider0 = nil
+slider1 = nil
+slider2 = nil
+slider3 = nil
+t = nil
+
+eas = nil
+ease= nil
+
+x,y = nil, nil
+x1,x2 = nil, nil
+y1,y2 = nil, nil
+collectgarbage("collect")
