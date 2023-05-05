@@ -6,7 +6,7 @@ K-means法によるクラスタリングにより、オブジェクトの減色�
 ## ▼導入方法
 aviutlのscriptフォルダに@berls.anmを、beRLF.dllを入れてください。
 また、本スクリプトは、oneTBBのビルドに含まれるtbb12.dllが必要です。
-ご自身でビルドされるか、oneTBBのgithubページ(Releasesのwindows用zipの中にあると思います)などからtbb12.dllを取り出し、beRLF.dllと同じフォルダにおいてください。
+ご自身でビルドされるか、oneTBBのgithubページ（Releasesのwindows用zipの中にあると思います）などからtbb12.dllを取り出し、beRLF.dllと同じフォルダにおいてください。
 
 oneTBBのgithubは[こちら](https://github.com/oneapi-src/oneTBB)
 
