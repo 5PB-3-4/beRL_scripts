@@ -1,0 +1,181 @@
+--[[
+    伯林青　自作スクリプト | 最終更新 : 2023/05/03
+    スクリプト一覧
+    ・K-meansランダム色ラベル
+    ・K-means減色
+    ・dnn超解像
+    
+    今後もいろいろ追加予定
+    This script & beRLF dll are written in Shift JIS
+]]
+--***********************************************************************************************--
+
+@K-meansランダム色ラベル
+--track0:クラスタ, 1, 256, 1, 1
+--check0:実行, 0
+
+local slider0 = obj.track0
+local exe = obj.check0
+local ud, w, h = obj.getpixeldata()
+
+local function reqDLL()
+    -- package.cpath = package.cpath..";"..obj.getinfo"script_path":gsub("[^\\]+\\$","?.dll")
+    local d = require("beRLF")
+    return d
+end
+
+local status, res = pcall(reqDLL)
+
+if status then
+    if exe then
+        res.KmLabeling(ud, w, h, slider0)
+        obj.putpixeldata(ud)
+    end
+else
+    print(res)
+end
+
+slider0 = nil
+ud, w, h = nil, nil, nil
+exe, status, res = nil, nil, nil
+collectgarbage("collect")
+--***********************************************************************************************--
+
+@K-means減色
+--track0:クラスタ, 1, 256, 1, 1
+--check0:実行, 0
+
+local slider0 = obj.track0
+local exe = obj.check0
+local ud, w, h = obj.getpixeldata()
+
+local function reqDLL()
+    -- package.cpath = package.cpath..";"..obj.getinfo"script_path":gsub("[^\\]+\\$","?.dll")
+    local d = require("beRLF")
+    return d
+end
+
+local status, res = pcall(reqDLL)
+
+if status then
+    if exe then
+        res.KmPosterize(ud, w, h, slider0)
+        obj.putpixeldata(ud)
+    end
+else
+    print(res)
+end
+
+slider0 = nil
+ud, w, h = nil, nil, nil
+exe, status, res = nil, nil, nil
+collectgarbage("collect")
+--***********************************************************************************************--
+
+@DNN超解像
+--check0:実行, 0
+--file:
+
+-- モデル読み込み
+tonumber(nil)
+if (file == nil or file == "") then
+    print("please select file path for reading models")
+    return
+end
+
+local dirpath = file
+local name = ""
+local path = string.gsub(dirpath, "\\", "/") -- c:/usr/.../ooooo_x?.pb
+local tmpA = string.sub(path, -8) -- oo_x?.pb
+local tmpB = string.sub(tmpA, 1, 2)
+local scale = tonumber(string.sub(tmpA, 5, 5))
+
+if (tmpB == "SR") then
+    name = "edsr"
+elseif (tmpB == "CN") then
+    name = "espcn"
+elseif (tmpB == "NN") then
+    name = "fsrcnn"
+elseif (tmpB == "RN") then
+    name = "lapsrn"
+else
+    print("model error")
+    return
+end
+
+if ((type(scale) ~= type(0)) or (scale < 2)) then
+    print("scale error")
+    return
+end
+
+-- 拡大後のバッファ領域を確保
+local _, w, h = obj.getpixeldata()
+local top    = math.floor(h * (scale - 1) / 2)
+local bottom = (scale - 1) * h - top
+local left   = math.floor(w * (scale - 1) / 2)
+local right  = (scale - 1) * w - left
+
+if (top > 4000) or (bottom > 4000) or (left > 4000) or (right > 4000) then
+    print("object size is too big !!.")
+    return
+elseif (top < 0) or (bottom < 0) or (left < 0) or (right < 0) then
+    print("original object size is too small !")
+    return
+else
+    obj.effect("領域拡張", "上", top, "下", bottom, "左", left, "右", right, "塗りつぶし", 0)
+end
+
+local Sud, Sw, Sh = obj.getpixeldata("alloc")
+
+-- デバッグ用
+-- print("model name : ".. name)
+-- print("model path")
+-- print(path)
+-- print("super resolution scale : ".. scale.. " | typeid : ".. type(scale))
+-- print("original object size [".. w.. " : ".. h.. "]")
+-- print("upscale object size [".. Sw.. " : ".. Sh.. "]")
+-- print("領域拡張 [".. top.. " : ".. bottom.. " : ".. left.. " : ".. right.. "]")
+-- print("---------------------------------------------------\n")
+
+-- dllの読み込み・実行
+local exe = obj.check0
+local function reqDLL()
+    -- package.cpath = package.cpath..";"..obj.getinfo"script_path":gsub("[^\\]+\\$","?.dll")
+    local d = require("beRLF")
+    return d
+end
+
+local status, res = pcall(reqDLL)
+
+if status then
+    if exe then
+        res.superres(Sud, Sw, Sh, top, left, name, path, scale)
+        obj.putpixeldata(Sud)
+    end
+else
+    print(res)
+end
+
+-- メモリ解放
+file = nil
+dirpath = nil
+name = nil
+path = nil
+tmpA = nil
+tmpB = nil
+scale = nil
+w, h = nil, nil
+Sud, Sw, Sh = nil
+exe, status, res = nil, nil, nil
+collectgarbage("collect")
+--***********************************************************************************************--
+
+--[[
+    reference
+
+    ・超解像に使用できるモデルの配布リンク(exportやmodelsフォルダ内にある"XX.pb"ファイルが必要)
+	EDSR   :: https://github.com/Saafke/EDSR_Tensorflow/tree/master/models
+	ESPCN  :: https://github.com/fannymonori/TF-ESPCN/tree/master/export
+	FSRCNN :: https://github.com/Saafke/FSRCNN_Tensorflow/tree/master/models
+	LAPSRN :: https://github.com/fannymonori/TF-LapSRN/tree/master/export
+]]
