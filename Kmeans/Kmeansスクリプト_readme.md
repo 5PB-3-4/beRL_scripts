@@ -18,15 +18,17 @@ oneTBBのgithubは[こちら](https://github.com/oneapi-src/oneTBB)
 選択したクラスターの数だけラベリングし、各ラベルごとにラベルの代表色で描画します。
 
 ▼注意点
-・スクリプトを読み込むごとにクラスタリングの計算を行います。これにより描画内容が変わることがあります。
+
+- スクリプトを読み込むごとにクラスタリングの計算を行います。これにより描画内容が変わることがあります。
 描画パターンを保存したい場合は、ゆうきさんの一時保存読込EXTやrikky_bufferスクリプトなどを利用して保存してください。
 
 ▼バグ
+
 ver1.0 ('23/5/5)
 
 ▼参照したもの
-http://opencv.jp/cookbook/opencv_img.html#k-means
-http://opencv.jp/opencv2-x-samples/k-means_clustering/
+- http://opencv.jp/cookbook/opencv_img.html#k-means
+- http://opencv.jp/opencv2-x-samples/k-means_clustering/
 
 ▼バグ報告等の連絡先はこちら
 Twitter : @blue_beRL
