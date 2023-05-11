@@ -4,8 +4,8 @@
 K-means法によるクラスタリングにより、オブジェクトの減色やランダム色によるラベリングを行います。
 
 ## ▼導入方法
-aviutlのscriptフォルダに@berls.anmを、beRLF.dllを入れてください。
-また、本スクリプトは、oneTBBのビルドに含まれるtbb12.dllが必要です。
+- aviutlのscriptフォルダに@berls.anmを、beRLF.dllを入れてください。
+- また、本スクリプトは、oneTBBのビルドに含まれるtbb12.dllが必要です。
 ご自身でビルドされるか、oneTBBのgithubページ（Releasesのwindows用zipの中にあると思います）などからtbb12.dllを取り出し、beRLF.dllと同じフォルダにおいてください。
 
 oneTBBのgithubは[こちら](https://github.com/oneapi-src/oneTBB)
@@ -18,9 +18,9 @@ oneTBBのgithubは[こちら](https://github.com/oneapi-src/oneTBB)
 選択したクラスターの数だけラベリングし、各ラベルごとにラベルの代表色で描画します。
 
 ## ▼注意点
-スクリプトを読み込むごとにクラスタリングの計算を行います。これにより描画内容が変わることがあります。
+- スクリプトを読み込むごとにクラスタリングの計算を行います。これにより描画内容が変わることがあります。
 描画パターンを保存したい場合は、ゆうきさんの一時保存読込EXTやrikky_bufferスクリプトなどを利用して保存してください。
-また、本スクリプトのdllはvisual studio 2017にてビルドしています。
+- また、本スクリプトのdllはvisual studio 2017にてビルドしています。
 利用にはVisual C++ 再頒布可能パッケージ【Microsoft Visual C++ 2015-2022 Redistributable(x86)】が必要です。
 
 ## ▼バグ
