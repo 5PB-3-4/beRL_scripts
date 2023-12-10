@@ -1,0 +1,117 @@
+--[[
+    @rikky_buffer.anm
+    ver1.1
+    (車輪の再発明)
+]]
+-------------------------------------------------------------------------------------------
+@画像データの保存
+--track0:id,1,1000,0,1
+--check0:ﾌﾚｰﾑﾊﾞｯﾌｧ参照,1
+--dialog:仮想ﾊﾞｯﾌｧ読込/chk,_1=0;injection,_0=nil;
+
+
+local id=_0 or obj.track0
+local check_frm=obj.check0
+local check_tmp=_1 ~=0
+_0=nil
+_1=nil
+
+
+require("rikky_buffer")
+
+--copybuffer
+if(check_frm) then  safe_copybuffer("obj","frm")    end
+if(check_tmp) then  safe_copybuffer("obj","tmp")    end
+
+--write
+rikky_buffer.write(id)
+
+obj.alpha=0
+
+--メモリ解放 
+id=nil
+check_frm=nil
+check_tmp=nil
+collectgarbage("collect")
+
+-------------------------------------------------------------------------------------------
+@保存データの読み込み
+--track0:id,0,1000,0,1
+--dialog:injection,_0=nil;
+
+
+local id=_0 or obj.track0
+_0=nil
+require("rikky_buffer")
+
+--read
+rikky_buffer.read(id)
+
+--メモリ解放
+id=nil
+collectgarbage("collect")
+
+-------------------------------------------------------------------------------------------
+@保存データの消去
+--track0:id,0,1000,0,1
+--check0:全消し,0
+--dialog:injection,_0=nil;
+
+
+local id=_0 or obj.track0
+local check_all=obj.check0
+_0=nil
+require("rikky_buffer")
+
+--clean
+if(check_all) then
+
+    local use_id=rikky_buffer.useid()
+    local limit=use_id[1] or 1
+    for i=1,#use_id do
+        limit=(limit<use_id[i]) and use_id[i] or limit
+    end
+
+    -- rikky_buffer.clean2()
+    for i=0,limit do
+        rikky_buffer.clean(i)
+    end
+
+    limit,use_id=nil,nil
+else
+    rikky_buffer.clean(id)
+end
+
+--メモリ解放
+id=nil
+check_all=nil
+collectgarbage("collect")
+
+-------------------------------------------------------------------------------------------
+@保存データの複製
+--track0:dst_id,0,1000,1,1
+--track1:src_id,0,1000,0,1
+--check0:上書き,1
+--dialog:injection,_0=nil;
+
+
+_0=_0 or {}
+local dst_id=_0[1] or obj.track0
+local src_id=_0[2] or obj.track1
+local overwrite=obj.check0
+_0=nil
+
+require("rikky_buffer")
+
+--copy
+if (overwrite) then
+    rikky_buffer.copy(dst_id,src_id)
+else
+    rikky_buffer.copy2(dst_id,src_id)
+end
+
+--メモリ解放
+dst_id=nil
+src_id=nil
+overwrite=nil
+collectgarbage("collect")
