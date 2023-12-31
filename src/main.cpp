@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <string>
+#include <numeric>
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn_superres.hpp>
 #include <lua.hpp>
@@ -27,6 +28,7 @@ using namespace Concurrency;
 int superres(lua_State* L);
 int KmLabeling(lua_State* L);
 int KmPosterize(lua_State* L);
+int directblur(lua_State* L);
 
 const char* toStringRestrict(lua_State* L, int idx) noexcept;
 Mat upscaleImage(Mat img, cv::String model, cv::String modelPath, int scale);
@@ -37,6 +39,7 @@ static luaL_Reg functions[] = {
 	{"superres", superres},
 	{"KmLabeling", KmLabeling},
 	{"KmPosterize", KmPosterize},
+	{"directblur", directblur},
 	{ nullptr, nullptr }
 };
 
@@ -228,6 +231,46 @@ int KmPosterize(lua_State* L)
 	return 0;
 }
 
+int directblur(lua_State* L)
+{
+	auto pFrame = lua_touserdata(L, 1);
+	auto width = static_cast<int>(lua_tointeger(L, 2));
+	auto height = static_cast<int>(lua_tointeger(L, 3));
+	auto degree = static_cast<double>(lua_tonumber(L, 4));
+	auto ksize = static_cast<int>(lua_tointeger(L, 5));
+	auto sigma = static_cast<double>(lua_tonumber(L, 6));
+
+	Mat img(height, width, CV_8UC4, pFrame), tmp;
+	if (img.empty())
+	{
+		std::cout << "Mat array is empty..." << std::endl;
+		return 0;
+	}
+	img.copyTo(tmp);
+
+	double rx = std::cos(degree * CV_PI / 180);
+	double ry = std::sin(degree * CV_PI / 180);
+	std::vector<float> kl(ksize * ksize, 0.0);
+	parallel_for(0, ksize, 1, [ksize, rx, ry, &kl, sigma](int j)
+		{
+			for (int i = 0; i < ksize; i++)
+			{
+				float x = static_cast<float>(i - ksize / 2);
+				float y = static_cast<float>(j - ksize / 2);
+				float elements = static_cast<float>(std::exp(-1 * (x * ry - y * rx) * (x * ry - y * rx) / (2 * sigma)));
+				kl[i + j * ksize] = elements;
+			}
+		}
+	);
+	Mat kernel(ksize, ksize, CV_32F, kl.data());
+	float sums = std::reduce(kl.begin(), kl.end());
+	kernel = kernel / sums;
+	Mat result;
+	cv::filter2D(tmp, result, -1, kernel);
+
+	memcpy(pFrame, result.data, width * height * tmp.channels());
+	return 0;
+}
 /********************************************************************************/
 /*[utility functions]*/
 
