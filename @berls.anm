@@ -265,3 +265,34 @@ switch0=nil
 collectgarbage("collect")
 
 -- *********************************************************************************************** --
+@方向ブラー
+--track0:角度,-180,180,0,0.01
+--track1:強度,1,2000,1,1
+--track2:オフセット,0.01,1000,1,0.01
+--check0:サイズ保持,0
+
+tonumber(nil)
+
+local slider0=obj.track0
+local slider1=obj.track1
+local slider2=obj.track2
+local switch0=obj.check0
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(dr_blr,slider0,slider1,slider2,switch0)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0=nil
+slider1=nil
+slider2=nil
+switch0=nil
+collectgarbage("collect")
+
+-- 参考
+-- http://wakaba-technica.sakura.ne.jp/library/graphic_motionblur.html
+
+-- *********************************************************************************************** --

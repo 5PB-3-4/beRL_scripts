@@ -305,3 +305,19 @@ im_glc = function(slider0,slider1,slider2,slider3,switch0,color)
     obj.effect("リサイズ","X",zx*100,"Y",zy*100,"補間なし",1)
     obj.effect("単色化","強さ",100,"輝度を保持する",0,"color",color)
 end
+
+----------------------------------------------------------------------------------------------------------------------------------
+-- 方向ブラー
+----------------------------------------------------------------------------------------------------------------------------------
+dr_blr = function(slider0,slider1,slider2,switch0)
+    if not switch0 then
+        plus = math.floor(slider1/2)
+        obj.effect("領域拡張", "上", plus, "下", plus, "左", plus, "右", plus, "塗りつぶし", 0)
+    end
+    local ud, w, h = obj.getpixeldata()
+
+    -- 実行
+    local b = require("beRLF")
+    b.directblur(ud, w, h, slider0,slider1,slider2)
+    obj.putpixeldata(ud)
+end
