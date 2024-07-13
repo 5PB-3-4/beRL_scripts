@@ -1,7 +1,7 @@
 # beRL_scripts
 
 ## ▼導入
-こちらは作成したAviutl用のスクリプトの配布ページです。[release]()の方からダウンロードしてください。`@berls`フォルダをscriptフォルダに入れてください。
+こちらは作成したAviutl用のスクリプトの配布ページです。[release](https://github.com/5PB-3-4/beRL_scripts/releases)の方からダウンロードしてください。`@berls`フォルダをscriptフォルダに入れてください。
 
 本スクリプトのご利用には以下が必要となります。
 - LuaJIT (lua51.dllをluajitのものに置き換えてください)
