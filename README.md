@@ -22,7 +22,7 @@
 
 ### 2024/07/12
 - メッシュ変形スクリプトと時間計測スクリプトを追加しました。
-- 過去のリポジトリは[old2](https://github.com/5PB-3-4/beRL_scripts/tree/old2)へ移行しました。
+- 以前のリポジトリは[old2](https://github.com/5PB-3-4/beRL_scripts/tree/old2)へ移行しました。
 
 ### 2024/01/06
 - 次回の更新では.dllファイルやanmファイルの配布場所を[Releases](https://github.com/5PB-3-4/beRL_scripts/releases)に変更し、mainのリポジトリで置かれているものは簡易説明やソースコードといたします。度重なる変更ですが、ご容赦ください。
