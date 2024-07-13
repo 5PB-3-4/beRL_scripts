@@ -1,0 +1,352 @@
+--[[
+    伯林青　自作スクリプト | 最終更新 : 2024/07/12
+    rikky_moduleを用いたものは除外しています（rikky_moduleはAGPLライセンスらしいのでGPL汚染対策として）
+    スクリプト一覧
+    - K-meansランダム色ラベル
+    - K-means減色
+    - dnn超解像
+    - color_separate_pixel
+    - ease_rand_move
+    - dither
+    - グリッチ風画像
+    - 時間計測
+    - メッシュ変形
+
+    今後もいろいろ追加予定
+    This scripts are written in Shift-JIS.
+]]
+
+-- *********************************************************************************************** --
+@K-meansランダム色ラベル
+--track0:クラスタ, 1, 256, 1, 1
+--check0:実行, 0
+
+local slider0 = obj.track0
+local exe = obj.check0
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad,err = pcall(km_rand, slider0, exe)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+exe, slider0 = nil, nil
+isLoad = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@K-means減色
+--track0:クラスタ, 1, 256, 1, 1
+--check0:実行, 0
+
+local slider0 = obj.track0
+local exe = obj.check0
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad,err = pcall(km_sub, slider0, exe)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+exe, slider0 = nil, nil
+isLoad = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@DNN超解像
+--track0:透明反映, 0, 1, 0, 1
+--check0:実行, 0
+--file:
+
+-- パスの設定
+tonumber(nil)
+if (file == nil or file == "") then
+    print("please select file path for reading models")
+    return
+end
+
+-- 読み込み・実行
+local slider0 = obj.track0 ~= 0
+local exe = obj.check0
+require("berls_func")
+if exe then
+    local isLoad, err = pcall(dn_sup, file, slider0)
+    if not isLoad then
+        debug_print(err)
+    end
+end
+
+-- メモリ解放
+file, exe = nil, nil
+isLoad = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@color_separate_pixel
+--track0:分割_縦,1,100,1,1
+--track1:分割_横,1,100,1,1
+--track2:seed,0,1000,0,1
+--check0:時間色変化,0
+--dialog:縦グリット隔幅,_1=1;横グリット隔幅,_2=1;色1/col,_3=0xa06fc4;色2/col,_4=0x6fbac4;色3/col,_5=0xfbe175;色4/col,_6=0xf6a04b;ﾗﾝﾀﾞﾑ色/chk,_7=0;透明度ﾗﾝﾀﾞﾑ/chk,_8=0;類似色/chk,_9=0;正方形分割/chk,_10=0;
+
+local slider0	= obj.track0
+local slider1	= obj.track1
+local slider2	= obj.track2
+local switch0	= obj.check0
+
+local frame_chenge = (switch0) and obj.frame or 1
+
+local w_interval = math.abs(_1) or 1
+local h_interval = math.abs(_2) or 1
+local col_select = {_3,_4,_5,_6}
+local rand_col   = _7 ~=0
+local alpha      = _8 ~=0
+local luminance  = _9 ~=0
+local square     = _10 ~=0
+-- 変数廃棄
+_1  = nil
+_2  = nil
+_3  = nil
+_4  = nil
+_5  = nil
+_6  = nil
+_7  = nil
+_8  = nil
+_9  = nil
+_10 = nil
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(px_spr, slider0,slider1,slider2,frame_chenge,w_interval,h_interval,col_select,rand_col,alpha,luminance,square)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0	= nil
+slider1	= nil
+slider2	= nil
+switch0	= nil
+isLoad = nil
+w_interval = nil
+h_interval = nil
+col_select = nil
+rand_col = nil
+alpha = nil
+luminance = nil
+square = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@ease_rand_move
+--track0:数,0,1000,30,1
+--track1:範囲,0,10000,100,0.1
+--track2:進行,0,100,0,0.01
+--track3:seed,0,1000,1,1
+--check0:時間変化,0
+--dialog:参照ｲｰｼﾞﾝｸﾞ,_1=1;アンカー,pos={};マーカー/chk,_2=1;
+
+obj.effect()
+
+local slider0 = obj.track0
+local slider1 = obj.track1
+local slider2 = obj.track2
+local slider3 = obj.track3
+local t = obj.check0 and obj.frame or 0
+
+if slider0==0 then return end
+
+local enum = _1
+local mark = _2 ~= 0
+-- 変数廃棄
+_1=nil
+_2=nil
+
+obj.setanchor("pos",2)
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(es_mv, slider0,slider1,slider2,slider3, t, enum, mark, pos)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0 = nil
+slider1 = nil
+slider2 = nil
+slider3 = nil
+t = nil
+pos = nil
+enum = nil
+mark = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@dither
+--track0:階調_赤,1,256,8,1
+--track1:階調_緑,1,256,8,1
+--track2:階調_青,1,256,8,1
+--track3:bayer,1,10,2,1
+--check0:マップ表示,0
+--dialog:減色のみ/chk,_1=0;マップ指定/chk,_2=0;指定マップ,_3={{0,1,2},{3,4,5},{6,7,8}};係数,_4=9;ver1_0/chk,_5=0;
+
+local slider0=obj.track0
+local slider1=obj.track1
+local slider2=obj.track2
+local slider3=obj.track3
+local switch0=obj.check0
+
+local reduced   = _1 ~=0
+local map       = _2 ~=0
+local custom    = _3
+local coef      = _4
+local transpose = _5 ~=0
+-- 変数廃棄
+_1=nil
+_2=nil
+_3=nil
+_4=nil
+_5=nil
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(by_dtr, slider0, slider1, slider2, slider3, switch0, reduced, map, custom, coef, transpose)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0=nil
+slider1=nil
+slider2=nil
+slider3=nil
+switch0=nil
+reduced = nil
+map = nil
+custom = nil
+coef = nil
+transpose = nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@グリッチ風画像
+--track0:先頭位置,0,100,4,1
+--track1:図形割合,0,100,4,1
+--track2:seed,1,100,3,1
+--track3:進行度,0,100,0,0.01
+--check0:ランダム変化,0
+--dialog:色/col,_1=0xffffff;
+
+local slider0 = obj.track0
+local slider1 = obj.track1
+local slider2 = obj.track2
+local slider3 = obj.track3
+local switch0 = obj.check0
+local color = _1
+-- 変数廃棄
+_1=nil
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(im_glc ,slider0,slider1,slider2,slider3,switch0,color)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0=nil
+slider1=nil
+slider2=nil
+slider3=nil
+switch0=nil
+collectgarbage("collect")
+
+-- *********************************************************************************************** --
+@方向ブラー
+--track0:角度,-180,180,0,0.01
+--track1:強度,1,2000,1,1
+--track2:オフセット,0.01,1000,1,0.01
+--check0:サイズ保持,0
+
+tonumber(nil)
+
+local slider0=obj.track0
+local slider1=obj.track1
+local slider2=obj.track2
+local switch0=obj.check0
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(dr_blr,slider0,slider1,slider2,switch0)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0=nil
+slider1=nil
+slider2=nil
+switch0=nil
+collectgarbage("collect")
+
+-- 参考
+-- http://wakaba-technica.sakura.ne.jp/library/graphic_motionblur.html
+
+-- *********************************************************************************************** --
+@時間計測
+--track0:mode,-1,1,-1,1
+--track1:ffi,0,1,0,1
+--check0:表示,0
+
+local slider0=obj.track0
+local slider1=obj.track1 ==1
+local switch0=obj.check0
+
+require("berls_func")
+local isLoad, err = pcall(tm_clc,slider0,slider1,switch0)
+if not isLoad then
+    debug_print(err)
+end
+
+slider0=nil
+switch0=nil
+
+-- *********************************************************************************************** --
+@メッシュ変形
+--track0:手法,0,6,1,1
+--track1:余白,1,1000,10,1
+--check0:表示,0
+--dialog:アンカー,pos=nil;
+
+pos = pos or {
+    -obj.w/2.0,-obj.h/2.0,  -obj.w/6.0,-obj.h/2.0,  obj.w/6.0,-obj.h/2.0,  obj.w/2.0-1,-obj.h/2.0,
+    -obj.w/2.0,-obj.h/6.0,  -obj.w/6.0,-obj.h/6.0,  obj.w/6.0,-obj.h/6.0,  obj.w/2.0-1,-obj.h/6.0,
+    -obj.w/2.0, obj.h/6.0,  -obj.w/6.0, obj.h/6.0,  obj.w/6.0, obj.h/6.0,  obj.w/2.0-1, obj.h/6.0,
+    -obj.w/2.0, obj.h/2.0,  -obj.w/6.0, obj.h/2.0,  obj.w/6.0, obj.h/2.0,  obj.w/2.0-1, obj.h/2.0
+}
+
+tonumber(nil)
+obj.effect()
+local slider0 = obj.track0
+local slider1 = obj.track1
+local switch0 =obj.check0
+
+obj.setanchor("pos",16)
+
+-- 読み込み・実行
+require("berls_func")
+local isLoad, err = pcall(ms_trs, slider0,slider1,switch0,pos)
+if not isLoad then
+    debug_print(err)
+end
+
+-- メモリ解放
+slider0 = nil
+slider1 = nil
+switch0 = nil
+collectgarbage("collect")
